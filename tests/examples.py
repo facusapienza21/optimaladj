@@ -1,4 +1,4 @@
-from optimal_adjustment.CausalGraph import CausalGraph
+from optimaladj.CausalGraph import CausalGraph
 
 
 class CausalGraphExample():

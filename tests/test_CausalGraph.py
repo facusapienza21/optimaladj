@@ -1,5 +1,5 @@
 import pytest
-from optimal_adjustment.CausalGraph import ConditionException, NoAdjException
+from optimaladj.CausalGraph import ConditionException, NoAdjException
 from tests.examples import EXAMPLES, OPTIMALS, OPTIMALS_MINIMAL, OPTIMALS_MINIMUM
 
 
