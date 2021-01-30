@@ -15,7 +15,7 @@ OPTIMALS = []
 OPTIMALS_MINIMAL = []
 OPTIMALS_MINIMUM = []
 
-# Example 1, Figure 3 of the paper
+# Figure 3 of the paper
 
 G_1 = CausalGraph()
 G_1.add_edges_from([('A', 'M'),
@@ -36,7 +36,7 @@ OPTIMALS.append(set(['T', 'F']))
 OPTIMALS_MINIMAL.append(set(['T', 'F']))
 OPTIMALS_MINIMUM.append(set(['T', 'F']))
 
-# Example 2, Figure 4 of the paper
+# Figure 4 of the paper
 
 G_2 = CausalGraph()
 G_2.add_edges_from([('A', 'Y'),
@@ -59,7 +59,7 @@ OPTIMALS.append(set(['T', 'W2', 'W3', 'W4']))
 OPTIMALS_MINIMAL.append(set(['T', 'W2', 'W3']))
 OPTIMALS_MINIMUM.append(set(['T', 'W1']))
 
-# Example 4, Figure 5 of the paper
+# Figure 5 of the paper
 
 G_3 = CausalGraph()
 G_3.add_edges_from([('A', 'Y'),
@@ -77,3 +77,21 @@ EXAMPLES.append(CausalGraphExample(G_3, treatment_3, outcome_3, L_3, N_3))
 OPTIMALS.append("Conditions to guarantee the existence of an optimal adjustment set are not satisfied")
 OPTIMALS_MINIMAL.append(set())
 OPTIMALS_MINIMUM.append(set())
+
+# Figure 6 of the paper
+
+G_4 = CausalGraph()
+G_4.add_edges_from([('T', 'A'),
+                    ('A', 'Y'),
+                    ('U', 'Y'),
+                    ('U', 'F')])
+L_4 = ['T']
+N_4 = ['A', 'Y', 'T', 'F']
+treatment_4 = 'A'
+outcome_4 = 'Y'
+
+EXAMPLES.append(CausalGraphExample(G_4, treatment_4, outcome_4, L_4, N_4))
+
+OPTIMALS.append("Conditions to guarantee the existence of an optimal adjustment set are not satisfied")
+OPTIMALS_MINIMAL.append(set('T'))
+OPTIMALS_MINIMUM.append(set('T'))
