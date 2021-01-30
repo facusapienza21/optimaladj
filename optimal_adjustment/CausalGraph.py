@@ -1,7 +1,7 @@
 import networkx as nx
 
 #TODO: check types of inputs and raise errors accordingly
-#TODO: unit and integration tests using pytest; use the examples in the paper
+#TODO: unit tests using pytest; use the examples in the paper
 
 
 class CausalGraph(nx.DiGraph):
