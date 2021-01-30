@@ -31,7 +31,7 @@ def test_optimal_minimal(example, optimal_minimal_stored):
 
 
 @pytest.mark.parametrize("example, optimal_minimum_stored", zip(EXAMPLES[1:4], OPTIMALS_MINIMUM[1:4]))
-def test_optimal_minimal(example, optimal_minimum_stored):
+def test_optimal_minimum(example, optimal_minimum_stored):
     optimal = example.G.optimal_minimum_adj_set(treatment=example.treatment,
                                                 outcome=example.outcome,
                                                 L=example.L,
