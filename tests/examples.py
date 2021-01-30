@@ -95,3 +95,19 @@ EXAMPLES.append(CausalGraphExample(G_4, treatment_4, outcome_4, L_4, N_4))
 OPTIMALS.append("Conditions to guarantee the existence of an optimal adjustment set are not satisfied")
 OPTIMALS_MINIMAL.append(set('T'))
 OPTIMALS_MINIMUM.append(set('T'))
+
+# Example with no observable adjustment set
+G_5 = CausalGraph()
+G_5.add_edges_from([('A', 'Y'),
+                    ('U', 'Y'),
+                    ('U', 'A')])
+L_5 = []
+N_5 = ['A', 'Y']
+treatment_5 = 'A'
+outcome_5 = 'Y'
+
+EXAMPLES.append(CausalGraphExample(G_5, treatment_5, outcome_5, L_5, N_5))
+
+OPTIMALS.append("An adjustment set formed by observable variables does not exist")
+OPTIMALS_MINIMAL.append("An adjustment set formed by observable variables does not exist")
+OPTIMALS_MINIMUM.append("An adjustment set formed by observable variables does not exist")

@@ -1,14 +1,26 @@
 import networkx as nx
 
+EXCEPTION_COND = "Conditions to guarantee the existence of an optimal adjustment set are not satisfied"
+EXCEPTION_NO_ADJ = "An adjustment set formed by observable variables does not exist"
 #TODO: check types of inputs and raise errors accordingly
-#TODO: unit tests using pytest; use the examples in the paper
+#TODO: unit tests using pytest; test for eg the backdoor_graph method and the build_h0 and build_h1 methods,
+# using the examples in the paper
+#TODO: add "big" example from the paper
+
+
+class ConditionException(Exception):
+    pass
+
+
+class NoAdjException(Exception):
+    pass
 
 
 class CausalGraph(nx.DiGraph):
     """
     A class for Causal Graphs. Inherits from nx.Digraph.
 
-    Implements a number of methods for finding optimal adjustment sets.
+    Implements methods for finding optimal adjustment sets.
     """
     def __init__(self):
         super().__init__(self)
@@ -246,11 +258,13 @@ class CausalGraph(nx.DiGraph):
         optimal: set
         """
         H1 = self.build_H1(treatment, outcome, L, N)
-        if N == self.nodes() or set(N).issubset(self.ancestors_all(L + [treatment, outcome])):
+        if treatment in H1.neighbors(outcome):
+            raise NoAdjException(EXCEPTION_NO_ADJ)
+        elif N == self.nodes() or set(N).issubset(self.ancestors_all(L + [treatment, outcome])):
             optimal = nx.node_boundary(H1, outcome)
             return optimal
         else:
-            return "Conditions to guarantee the existence of an optimal adjustment set are not satisfied"
+            raise ConditionException(EXCEPTION_COND)
 
     def optimal_minimal_adj_set(self, treatment, outcome, L, N):
         """Returns the optimal minimal adjustment set with respect to treatment, outcome, L and N
@@ -272,8 +286,12 @@ class CausalGraph(nx.DiGraph):
         """
 
         H1 = self.build_H1(treatment, outcome, L, N)
-        optimal_minimal = self.unblocked(H1, treatment, nx.node_boundary(H1, set([outcome])))
-        return optimal_minimal
+
+        if treatment in H1.neighbors(outcome):
+            raise NoAdjException(EXCEPTION_NO_ADJ)
+        else:
+            optimal_minimal = self.unblocked(H1, treatment, nx.node_boundary(H1, set([outcome])))
+            return optimal_minimal
 
     @staticmethod
     def isInMinimum(H, treatment, outcome, node):
@@ -330,14 +348,17 @@ class CausalGraph(nx.DiGraph):
 
         optimal_minimum = set()
 
-        if outcome not in nx.node_connected_component(H1, treatment):
-            return optimal_minimum
+        if treatment in H1.neighbors(outcome):
+            raise NoAdjException(EXCEPTION_NO_ADJ)
+        else:
+            if outcome not in nx.node_connected_component(H1, treatment):
+                return optimal_minimum
 
-        for path in nx.node_disjoint_paths(H1, s=outcome, t=treatment):
-            for node in path:
-                if node == outcome:
-                    continue
-                if self.isInMinimum(H1, treatment, outcome, node):
-                    optimal_minimum.add(node)
-                    break
-        return optimal_minimum
+            for path in nx.node_disjoint_paths(H1, s=outcome, t=treatment):
+                for node in path:
+                    if node == outcome:
+                        continue
+                    if self.isInMinimum(H1, treatment, outcome, node):
+                        optimal_minimum.add(node)
+                        break
+            return optimal_minimum
