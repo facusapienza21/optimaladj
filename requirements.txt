@@ -1,0 +1,2 @@
+networkx==2.5
+pytest==6.2.2
