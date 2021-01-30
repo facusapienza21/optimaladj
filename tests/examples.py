@@ -1,7 +1,7 @@
 from optimaladj.CausalGraph import CausalGraph
 
 
-class CausalGraphExample():
+class CausalGraphExample:
     def __init__(self, G, treatment, outcome, L, N):
         self.G = G
         self.treatment = treatment
