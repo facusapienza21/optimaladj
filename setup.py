@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="optimal_adjustments-fsapienza",
+    name="optimaladj-fsapienza",
     version="0.0.1",
     author="Facundo Sapienza, Ezequiel Smucler",
     author_email="fsapienza@berkeley.edu",
