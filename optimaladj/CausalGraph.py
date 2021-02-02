@@ -5,7 +5,6 @@ EXCEPTION_NO_ADJ = "An adjustment set formed by observable variables does not ex
 #TODO: check types of inputs and raise errors accordingly
 #TODO: unit tests using pytest; test for eg the backdoor_graph method and the build_h0 and build_h1 methods,
 # using the examples in the paper
-#TODO: add "big" example from the paper
 
 
 class ConditionException(Exception):
@@ -261,7 +260,7 @@ class CausalGraph(nx.DiGraph):
         if treatment in H1.neighbors(outcome):
             raise NoAdjException(EXCEPTION_NO_ADJ)
         elif N == self.nodes() or set(N).issubset(self.ancestors_all(L + [treatment, outcome])):
-            optimal = nx.node_boundary(H1, outcome)
+            optimal = nx.node_boundary(H1, set([outcome]))
             return optimal
         else:
             raise ConditionException(EXCEPTION_COND)
