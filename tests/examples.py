@@ -15,6 +15,43 @@ OPTIMALS = []
 OPTIMALS_MINIMAL = []
 OPTIMALS_MINIMUM = []
 
+# Figure 1 of the paper
+
+G_epi = CausalGraph()
+G_epi.add_edges_from([('coach', 'team motivation'),
+                  ('coach', 'fitness'),
+                  ('fitness', 'pre-game prop'),
+                  ('fitness', 'neuromusc fatigue'),
+                  ('team motivation', 'warm-up'),
+                  ('team motivation', 'previous injury'),
+                  ('pre-game prop', 'warm-up'),
+                  ('warm-up', 'intra-game prop'),
+                  ('contact sport', 'previous injury'),
+                  ('contact sport', 'intra-game prop'),
+                  ('intra-game prop', 'injury'),
+                  ('genetics', 'fitness'),
+                  ('genetics', 'neuromusc fatigue'),
+                  ('genetics', 'tissue disorder'),
+                  ('tissue disorder', 'neuromusc fatigue'),
+                  ('tissue disorder', 'tissue weakness'),
+                  ('neuromusc fatigue', 'intra-game prop'),
+                  ('neuromusc fatigue', 'injury'),
+                  ('tissue weakness', 'injury')])
+
+L_epi = ['team motivation', 'previous injury']
+N_epi = ['team motivation', 'previous injury', 'warm-up', 'coach', 'fitness',
+     'contact sport', 'neuromusc fatigue', 'tissue disorder', 'injury']
+treatment_epi = 'warm-up'
+outcome_epi = 'injury'
+
+EXAMPLES.append(CausalGraphExample(G_epi, treatment_epi, outcome_epi, L_epi, N_epi))
+
+OPTIMALS.append(set(['team motivation', 'previous injury', 'contact sport',
+                     'tissue disorder', 'neuromusc fatigue']))
+OPTIMALS_MINIMAL.append(set(['team motivation', 'previous injury', 'tissue disorder', 'neuromusc fatigue']))
+OPTIMALS_MINIMUM.append(set(['team motivation', 'previous injury', 'fitness']))
+
+
 # Figure 3 of the paper
 
 G_1 = CausalGraph()
