@@ -22,7 +22,7 @@ An optimal minimal adjustment set is an observable adjustment set that yields th
 An optimal minimum adjustment set is defined similarly, being optimal in the class of observable minimum adjustment sets, that is, valid observable adjustment sets of minimum cardinality among the observable adjustment sets.
 
 Under these assumptions, [Smucler, Sapienza and Rotnitzky (2020)](https://arxiv.org/abs/2004.10521) show that 
-optimal minimal and optimal minimum adjustment sets always exist, an can be computed in polynomial time. They also provide a sufficient criterion for the existance of an optimal adjustment set and a polynomial time algorithm to compute it when it exists.
+optimal minimal and optimal minimum adjustment sets always exist, and can be computed in polynomial time. They also provide a sufficient criterion for the existance of an optimal adjustment set and a polynomial time algorithm to compute it when it exists.
 
 Check out our notebook with [examples](https://github.com/facusapienza21/optimaladj/blob/main/examples/Examples.ipynb).
 
