@@ -13,7 +13,7 @@ Suppose we are given a causal graph G specifying:
 * a set of observable (that is, non-latent) variables N, and
 * a set of observable variables that will be used to allocate treatment L.
 
-Suppose moreover that there exists at least one adjustment set in G comprised of observable variables.
+Suppose moreover that there exists at least one adjustment set with respect to A and Y in G that is comprised of observable variables.
 
 An optimal adjustment set is an observable adjustment set that yields the non-parametric estimator of the interventional mean with the smallest asymptotic variance among those that are based on observable adjustment sets. 
 
