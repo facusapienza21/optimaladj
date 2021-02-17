@@ -7,7 +7,7 @@ setuptools.setup(
     name="optimaladj",
     version="0.0.1",
     author="Facundo Sapienza, Ezequiel Smucler",
-    author_email="fsapienza@berkeley.edu",
+    author_email="ezequiels.90@gmail.com",
     description="A package to compute optimal adjustment sets in causal graphs",
     long_description=long_description,
     long_description_content_type="text/markdown",

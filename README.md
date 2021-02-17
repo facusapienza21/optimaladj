@@ -28,8 +28,16 @@ Check out our notebook with [examples](https://github.com/facusapienza21/optimal
 
 ## Installation
 
+You can install the stable version of the package from [PyPI](https://pypi.org/project/optimaladj/0.0.1/) by running
+
+```sh
+pip install optimaladj
+```
+
 You can install the development version of the package from Github by running
 
 ```sh
 pip install git+https://github.com/facusapienza21/optimaladj.git#egg=optimaladj
 ```
+
+
