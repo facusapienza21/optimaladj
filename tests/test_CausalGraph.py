@@ -73,9 +73,11 @@ def test_optimal_minimum(example, optimal_minimum_stored):
     )
     assert optimal == optimal_minimum_stored
 
-
+@pytest.mark.parametrize(
+    "example, optimal_mincost_stored", zip(EXAMPLES[1:7], OPTIMALS_MINCOST[1:7])
+)
 def test_optimal_mincost(
-    example=EXAMPLES[6], optimal_mincost_stored=OPTIMALS_MINCOST[0]
+    example, optimal_mincost_stored
 ):
     optimal = example.G.optimal_mincost_adj_set(
         treatment=example.treatment, outcome=example.outcome, L=example.L, N=example.N

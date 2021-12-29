@@ -2,13 +2,12 @@ from optimaladj.CausalGraph import CausalGraph
 
 
 class CausalGraphExample:
-    def __init__(self, G, treatment, outcome, L, N, costs=None):
+    def __init__(self, G, treatment, outcome, L, N):
         self.G = G
         self.treatment = treatment
         self.outcome = outcome
         self.L = L
         self.N = N
-        self.costs = costs
 
 
 EXAMPLES = []
@@ -34,10 +33,28 @@ OPTIMALS_MINIMAL.append(
 OPTIMALS_MINIMUM.append(
     "An adjustment set formed by observable variables does not exist"
 )
+OPTIMALS_MINCOST.append(
+    "An adjustment set formed by observable variables does not exist"
+)
 
 # Figure 1 of the Biometrika paper
 
 G_epi = CausalGraph()
+N_epi = [
+    "team motivation",
+    "previous injury",
+    "warm-up",
+    "coach",
+    "fitness",
+    "contact sport",
+    "neuromusc fatigue",
+    "tissue disorder",
+    "injury",
+]
+costs_epi = [
+    (node, {"cost": 1}) for node in N_epi
+]
+G_epi.add_nodes_from(costs_epi)
 G_epi.add_edges_from(
     [
         ("coach", "team motivation"),
@@ -63,17 +80,6 @@ G_epi.add_edges_from(
 )
 
 L_epi = ["team motivation", "previous injury"]
-N_epi = [
-    "team motivation",
-    "previous injury",
-    "warm-up",
-    "coach",
-    "fitness",
-    "contact sport",
-    "neuromusc fatigue",
-    "tissue disorder",
-    "injury",
-]
 treatment_epi = "warm-up"
 outcome_epi = "injury"
 
@@ -94,11 +100,18 @@ OPTIMALS_MINIMAL.append(
     set(["team motivation", "previous injury", "tissue disorder", "neuromusc fatigue"])
 )
 OPTIMALS_MINIMUM.append(set(["team motivation", "previous injury", "fitness"]))
+OPTIMALS_MINCOST.append(set(["team motivation", "previous injury", "fitness"]))
 
 
 # Figure 3 of the Biometrika paper
 
 G_2 = CausalGraph()
+costs_2 = [
+    ("T", {"cost": 1}),
+    ("F", {"cost": 1}),
+    ("M", {"cost": 1}),
+]
+G_2.add_nodes_from(costs_2)
 G_2.add_edges_from(
     [("A", "M"), ("T", "A"), ("T", "F"), ("F", "A"), ("U", "F"), ("U", "Y"), ("M", "Y")]
 )
@@ -112,10 +125,17 @@ EXAMPLES.append(CausalGraphExample(G_2, treatment_2, outcome_2, L_2, N_2))
 OPTIMALS.append(set(["T", "F"]))
 OPTIMALS_MINIMAL.append(set(["T", "F"]))
 OPTIMALS_MINIMUM.append(set(["T", "F"]))
-
+OPTIMALS_MINCOST.append(set(["T", "F"]))
 # Figure 4 of the Biometrika paper
-
 G_3 = CausalGraph()
+costs_3 = [
+    ("T", {"cost": 1}),
+    ("W1", {"cost": 1}),
+    ("W2", {"cost": 1}),
+    ("W3", {"cost": 1}),
+    ("W4", {"cost": 1})
+]
+G_3.add_nodes_from(costs_3)
 G_3.add_edges_from(
     [
         ("A", "Y"),
@@ -139,10 +159,16 @@ EXAMPLES.append(CausalGraphExample(G_3, treatment_3, outcome_3, L_3, N_3))
 OPTIMALS.append(set(["T", "W2", "W3", "W4"]))
 OPTIMALS_MINIMAL.append(set(["T", "W2", "W3"]))
 OPTIMALS_MINIMUM.append(set(["T", "W1"]))
+OPTIMALS_MINCOST.append(set(["T", "W1"]))
 
 # Figure 5 of the Biometrika paper
 
 G_4 = CausalGraph()
+costs_4 = [
+    ("Z1", {"cost": 1}),
+    ("Z2", {"cost": 1})
+]
+G_4.add_nodes_from(costs_4)
 G_4.add_edges_from([("A", "Y"), ("Z1", "A"), ("Z1", "Z2"), ("U", "Z2"), ("U", "Y")])
 L_4 = []
 N_4 = ["A", "Y", "Z1", "Z2"]
@@ -156,10 +182,16 @@ OPTIMALS.append(
 )
 OPTIMALS_MINIMAL.append(set())
 OPTIMALS_MINIMUM.append(set())
+OPTIMALS_MINCOST.append(set())
 
 # Figure 6 of the Biometrika paper
 
 G_5 = CausalGraph()
+costs_5 = [
+    ("T", {"cost": 1}),
+    ("F", {"cost": 1})
+]
+G_5.add_nodes_from(costs_5)
 G_5.add_edges_from([("T", "A"), ("A", "Y"), ("U", "Y"), ("U", "F")])
 L_5 = ["T"]
 N_5 = ["A", "Y", "T", "F"]
@@ -173,6 +205,7 @@ OPTIMALS.append(
 )
 OPTIMALS_MINIMAL.append(set("T"))
 OPTIMALS_MINIMUM.append(set("T"))
+OPTIMALS_MINCOST.append(set(["T"]))
 
 # Figures 2 and 3 of optimal minimum cost paper
 
