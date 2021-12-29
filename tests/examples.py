@@ -17,6 +17,24 @@ OPTIMALS_MINIMAL = []
 OPTIMALS_MINIMUM = []
 OPTIMALS_MINCOST = []
 
+# Example with no observable adjustment set
+G_0 = CausalGraph()
+G_0.add_edges_from([("A", "Y"), ("U", "Y"), ("U", "A")])
+L_0 = []
+N_0 = ["A", "Y"]
+treatment_0 = "A"
+outcome_0 = "Y"
+
+EXAMPLES.append(CausalGraphExample(G_0, treatment_0, outcome_0, L_0, N_0))
+
+OPTIMALS.append("An adjustment set formed by observable variables does not exist")
+OPTIMALS_MINIMAL.append(
+    "An adjustment set formed by observable variables does not exist"
+)
+OPTIMALS_MINIMUM.append(
+    "An adjustment set formed by observable variables does not exist"
+)
+
 # Figure 1 of the Biometrika paper
 
 G_epi = CausalGraph()
@@ -80,16 +98,16 @@ OPTIMALS_MINIMUM.append(set(["team motivation", "previous injury", "fitness"]))
 
 # Figure 3 of the Biometrika paper
 
-G_1 = CausalGraph()
-G_1.add_edges_from(
+G_2 = CausalGraph()
+G_2.add_edges_from(
     [("A", "M"), ("T", "A"), ("T", "F"), ("F", "A"), ("U", "F"), ("U", "Y"), ("M", "Y")]
 )
-L_1 = ["T"]
-N_1 = ["A", "Y", "M", "T", "F"]
-treatment_1 = "A"
-outcome_1 = "Y"
+L_2 = ["T"]
+N_2 = ["A", "Y", "M", "T", "F"]
+treatment_2 = "A"
+outcome_2 = "Y"
 
-EXAMPLES.append(CausalGraphExample(G_1, treatment_1, outcome_1, L_1, N_1))
+EXAMPLES.append(CausalGraphExample(G_2, treatment_2, outcome_2, L_2, N_2))
 
 OPTIMALS.append(set(["T", "F"]))
 OPTIMALS_MINIMAL.append(set(["T", "F"]))
@@ -97,8 +115,8 @@ OPTIMALS_MINIMUM.append(set(["T", "F"]))
 
 # Figure 4 of the Biometrika paper
 
-G_2 = CausalGraph()
-G_2.add_edges_from(
+G_3 = CausalGraph()
+G_3.add_edges_from(
     [
         ("A", "Y"),
         ("T", "W1"),
@@ -111,12 +129,12 @@ G_2.add_edges_from(
         ("W4", "Y"),
     ]
 )
-L_2 = ["T"]
-N_2 = ["A", "Y", "T", "W1", "W2", "W3", "W4"]
-treatment_2 = "A"
-outcome_2 = "Y"
+L_3 = ["T"]
+N_3 = ["A", "Y", "T", "W1", "W2", "W3", "W4"]
+treatment_3 = "A"
+outcome_3 = "Y"
 
-EXAMPLES.append(CausalGraphExample(G_2, treatment_2, outcome_2, L_2, N_2))
+EXAMPLES.append(CausalGraphExample(G_3, treatment_3, outcome_3, L_3, N_3))
 
 OPTIMALS.append(set(["T", "W2", "W3", "W4"]))
 OPTIMALS_MINIMAL.append(set(["T", "W2", "W3"]))
@@ -124,14 +142,14 @@ OPTIMALS_MINIMUM.append(set(["T", "W1"]))
 
 # Figure 5 of the Biometrika paper
 
-G_3 = CausalGraph()
-G_3.add_edges_from([("A", "Y"), ("Z1", "A"), ("Z1", "Z2"), ("U", "Z2"), ("U", "Y")])
-L_3 = []
-N_3 = ["A", "Y", "Z1", "Z2"]
-treatment_3 = "A"
-outcome_3 = "Y"
+G_4 = CausalGraph()
+G_4.add_edges_from([("A", "Y"), ("Z1", "A"), ("Z1", "Z2"), ("U", "Z2"), ("U", "Y")])
+L_4 = []
+N_4 = ["A", "Y", "Z1", "Z2"]
+treatment_4 = "A"
+outcome_4 = "Y"
 
-EXAMPLES.append(CausalGraphExample(G_3, treatment_3, outcome_3, L_3, N_3))
+EXAMPLES.append(CausalGraphExample(G_4, treatment_4, outcome_4, L_4, N_4))
 
 OPTIMALS.append(
     "Conditions to guarantee the existence of an optimal adjustment set are not satisfied"
@@ -141,38 +159,20 @@ OPTIMALS_MINIMUM.append(set())
 
 # Figure 6 of the Biometrika paper
 
-G_4 = CausalGraph()
-G_4.add_edges_from([("T", "A"), ("A", "Y"), ("U", "Y"), ("U", "F")])
-L_4 = ["T"]
-N_4 = ["A", "Y", "T", "F"]
-treatment_4 = "A"
-outcome_4 = "Y"
+G_5 = CausalGraph()
+G_5.add_edges_from([("T", "A"), ("A", "Y"), ("U", "Y"), ("U", "F")])
+L_5 = ["T"]
+N_5 = ["A", "Y", "T", "F"]
+treatment_5 = "A"
+outcome_5 = "Y"
 
-EXAMPLES.append(CausalGraphExample(G_4, treatment_4, outcome_4, L_4, N_4))
+EXAMPLES.append(CausalGraphExample(G_5, treatment_5, outcome_5, L_5, N_5))
 
 OPTIMALS.append(
     "Conditions to guarantee the existence of an optimal adjustment set are not satisfied"
 )
 OPTIMALS_MINIMAL.append(set("T"))
 OPTIMALS_MINIMUM.append(set("T"))
-
-# Example with no observable adjustment set
-G_5 = CausalGraph()
-G_5.add_edges_from([("A", "Y"), ("U", "Y"), ("U", "A")])
-L_5 = []
-N_5 = ["A", "Y"]
-treatment_5 = "A"
-outcome_5 = "Y"
-
-EXAMPLES.append(CausalGraphExample(G_5, treatment_5, outcome_5, L_5, N_5))
-
-OPTIMALS.append("An adjustment set formed by observable variables does not exist")
-OPTIMALS_MINIMAL.append(
-    "An adjustment set formed by observable variables does not exist"
-)
-OPTIMALS_MINIMUM.append(
-    "An adjustment set formed by observable variables does not exist"
-)
 
 # Figures 2 and 3 of optimal minimum cost paper
 
