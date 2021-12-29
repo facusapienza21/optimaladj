@@ -1,10 +1,8 @@
 import networkx as nx
-
+import numpy as np
 EXCEPTION_COND = "Conditions to guarantee the existence of an optimal adjustment set are not satisfied"
 EXCEPTION_NO_ADJ = "An adjustment set formed by observable variables does not exist"
 #TODO: check types of inputs and raise errors accordingly
-#TODO: unit tests using pytest; test for eg the backdoor_graph method and the build_h0 and build_h1 methods,
-# using the examples in the paper
 
 
 class ConditionException(Exception):
@@ -237,6 +235,41 @@ class CausalGraph(nx.DiGraph):
             H1.add_edge(node, outcome)
 
         return H1
+
+    def build_D(self, treatment, outcome, L, N):
+        """Returns the D flow network associated with treatment, outcome, L and N.
+        If a node does not have a 'cost' attribute, this function will assume
+        the cost is infinity
+
+        Parameters
+        ----------
+        treatment : string
+            A node in the graph
+        outcome : string
+            A node in the graph
+        L : list of strings
+            Nodes in the graph
+        N : list of strings
+            Nodes in the graph
+
+        Returns
+        ----------
+        D: nx.Graph()
+        """
+        H1 = self.build_H1(treatment, outcome, L, N)
+        D = self.copy()
+        D.remove_nodes_from(self.nodes)
+        for node in H1.nodes.keys():
+            if 'cost' in H1.nodes[node]:
+                capacity = H1.nodes[node]['cost']
+            else:
+                capacity = np.inf
+            D.add_edge(node + "'", node + "''", capacity=capacity)
+
+        for edge in H1.edges.keys():
+            D.add_edge(edge[0] + "''", edge[1] + "'", capacity=np.inf)
+            D.add_edge(edge[1] + "''", edge[0] + "'", capacity=np.inf)
+        return D
 
     def optimal_adj_set(self, treatment, outcome, L, N):
         """Returns the optimal adjustment set with respect to treatment, outcome, L and N
