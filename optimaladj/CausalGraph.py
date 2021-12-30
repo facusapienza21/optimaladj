@@ -256,11 +256,10 @@ class CausalGraph(nx.DiGraph):
 
         Returns
         ----------
-        D: nx.Graph()
+        D: nx.DiGraph()
         """
         H1 = self.build_H1(treatment, outcome, L, N)
-        D = self.copy()
-        D.remove_nodes_from(self.nodes)
+        D = nx.DiGraph()
         for node in H1.nodes.keys():
             if "cost" in H1.nodes[node]:
                 capacity = H1.nodes[node]["cost"]
@@ -315,7 +314,7 @@ class CausalGraph(nx.DiGraph):
                     flow = flow_dict[edge[0]][edge[1]]
                     if flow > 0:
                         queu.append(edge[0])
-                        S_c.add(edge[1])
+                        S_c.add(edge[0])
         return S_c
 
     def h_operator(self, S):

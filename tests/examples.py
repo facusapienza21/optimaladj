@@ -51,9 +51,7 @@ N_epi = [
     "tissue disorder",
     "injury",
 ]
-costs_epi = [
-    (node, {"cost": 1}) for node in N_epi
-]
+costs_epi = [(node, {"cost": 1}) for node in N_epi]
 G_epi.add_nodes_from(costs_epi)
 G_epi.add_edges_from(
     [
@@ -133,7 +131,7 @@ costs_3 = [
     ("W1", {"cost": 1}),
     ("W2", {"cost": 1}),
     ("W3", {"cost": 1}),
-    ("W4", {"cost": 1})
+    ("W4", {"cost": 1}),
 ]
 G_3.add_nodes_from(costs_3)
 G_3.add_edges_from(
@@ -164,10 +162,7 @@ OPTIMALS_MINCOST.append(set(["T", "W1"]))
 # Figure 5 of the Biometrika paper
 
 G_4 = CausalGraph()
-costs_4 = [
-    ("Z1", {"cost": 1}),
-    ("Z2", {"cost": 1})
-]
+costs_4 = [("Z1", {"cost": 1}), ("Z2", {"cost": 1})]
 G_4.add_nodes_from(costs_4)
 G_4.add_edges_from([("A", "Y"), ("Z1", "A"), ("Z1", "Z2"), ("U", "Z2"), ("U", "Y")])
 L_4 = []
@@ -187,10 +182,7 @@ OPTIMALS_MINCOST.append(set())
 # Figure 6 of the Biometrika paper
 
 G_5 = CausalGraph()
-costs_5 = [
-    ("T", {"cost": 1}),
-    ("F", {"cost": 1})
-]
+costs_5 = [("T", {"cost": 1}), ("F", {"cost": 1})]
 G_5.add_nodes_from(costs_5)
 G_5.add_edges_from([("T", "A"), ("A", "Y"), ("U", "Y"), ("U", "F")])
 L_5 = ["T"]
@@ -207,7 +199,7 @@ OPTIMALS_MINIMAL.append(set("T"))
 OPTIMALS_MINIMUM.append(set("T"))
 OPTIMALS_MINCOST.append(set(["T"]))
 
-# Figures 2 and 3 of optimal minimum cost paper
+# Figures 1 and 2 of optimal minimum cost paper
 
 G_6 = CausalGraph()
 costs_6 = [
@@ -248,3 +240,125 @@ OPTIMALS.append(
 OPTIMALS_MINIMAL.append(set(["X", "T", "R"]))
 OPTIMALS_MINIMUM.append(set(["X", "K"]))
 OPTIMALS_MINCOST.append(set(["X", "T", "R"]))
+
+# Figures 1 and 2 of optimal minimum cost paper modified
+
+G_7 = CausalGraph()
+costs_7 = [
+    ("X", {"cost": 1}),
+    ("B", {"cost": 1}),
+    ("K", {"cost": 4}),
+    ("Q", {"cost": 1}),
+    ("R", {"cost": 2}),
+    ("T", {"cost": 1}),
+]
+L_7 = ["X"]
+N_7 = ["A", "Y", "X", "B", "K", "Q", "R", "M", "T", "F"]
+treatment_7 = "A"
+outcome_7 = "Y"
+G_7.add_nodes_from(costs_7)
+G_7.add_edges_from(
+    [
+        ("X", "A"),
+        ("A", "M"),
+        ("K", "A"),
+        ("B", "K"),
+        ("Q", "K"),
+        ("B", "R"),
+        ("Q", "T"),
+        ("R", "Y"),
+        ("M", "Y"),
+        ("T", "Y"),
+        ("U", "Y"),
+        ("U", "F"),
+    ]
+)
+
+EXAMPLES.append(CausalGraphExample(G_7, treatment_7, outcome_7, L_7, N_7))
+
+OPTIMALS.append(
+    "Conditions to guarantee the existence of an optimal adjustment set are not satisfied"
+)
+OPTIMALS_MINIMAL.append(set(["X", "T", "R"]))
+OPTIMALS_MINIMUM.append(set(["X", "K"]))
+OPTIMALS_MINCOST.append(set(["X", "B", "T"]))
+
+# Figure 3 of optimal minimum cost paper
+
+G_8 = CausalGraph()
+costs_8 = [
+    ("B", {"cost": 1}),
+    ("Q", {"cost": 1}),
+    ("R", {"cost": 2}),
+    ("T", {"cost": 2}),
+]
+L_8 = []
+N_8 = ["A", "Y", "B", "Q", "R", "T"]
+treatment_8 = "A"
+outcome_8 = "Y"
+G_8.add_nodes_from(costs_8)
+G_8.add_edges_from(
+    [
+        ("B", "A"),
+        ("B", "T"),
+        ("Q", "A"),
+        ("Q", "R"),
+        ("A", "Y"),
+        ("T", "Y"),
+        ("R", "Y"),
+    ]
+)
+
+EXAMPLES.append(CausalGraphExample(G_8, treatment_8, outcome_8, L_8, N_8))
+
+OPTIMALS.append(set(["T", "R"]))
+OPTIMALS_MINIMAL.append(set(["T", "R"]))
+OPTIMALS_MINIMUM.append(set(["T", "R"]))
+OPTIMALS_MINCOST.append(set(["B", "Q"]))
+
+# All different example
+
+G_9 = CausalGraph()
+costs_9 = [
+    ("W1", {"cost": 2}),
+    ("W2", {"cost": 1}),
+    ("W3", {"cost": 1}),
+    ("W4", {"cost": 1}),
+    ("W5", {"cost": 2}),
+    ("W6", {"cost": 1}),
+    ("W7", {"cost": 1}),
+    ("W8", {"cost": 1}),
+    ("W9", {"cost": 2}),
+    ("K", {"cost": 11}),
+    ("O", {"cost": 1}),
+]
+L_9 = []
+N_9 = ["A", "Y", "K", "O", "W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9"]
+treatment_9 = "A"
+outcome_9 = "Y"
+G_9.add_nodes_from(costs_9)
+G_9.add_edges_from(
+    [
+        ("K", "A"),
+        ("W1", "K"),
+        ("W2", "K"),
+        ("W3", "K"),
+        ("W1", "W4"),
+        ("W2", "W5"),
+        ("W3", "W6"),
+        ("W4", "W7"),
+        ("W5", "W8"),
+        ("W6", "W9"),
+        ("W7", "Y"),
+        ("W8", "Y"),
+        ("W9", "Y"),
+        ("O", "Y"),
+    ]
+)
+
+EXAMPLES.append(CausalGraphExample(G_9, treatment_9, outcome_9, L_9, N_9))
+
+OPTIMALS.append(set(["O", "W7", "W8", "W9"]))
+OPTIMALS_MINIMAL.append(set(["W7", "W8", "W9"]))
+OPTIMALS_MINIMUM.append(set(["K"]))
+OPTIMALS_MINCOST.append(set(["W7", "W8", "W6"]))
