@@ -1,10 +1,9 @@
 import networkx as nx
+import numpy as np
 
 EXCEPTION_COND = "Conditions to guarantee the existence of an optimal adjustment set are not satisfied"
 EXCEPTION_NO_ADJ = "An adjustment set formed by observable variables does not exist"
-#TODO: check types of inputs and raise errors accordingly
-#TODO: unit tests using pytest; test for eg the backdoor_graph method and the build_h0 and build_h1 methods,
-# using the examples in the paper
+# TODO: check types of inputs and raise errors accordingly
 
 
 class ConditionException(Exception):
@@ -21,6 +20,7 @@ class CausalGraph(nx.DiGraph):
 
     Implements methods for finding optimal adjustment sets.
     """
+
     def __init__(self):
         super().__init__(self)
 
@@ -227,7 +227,7 @@ class CausalGraph(nx.DiGraph):
         vertices_list = list(H1.nodes())
 
         for i, node1 in enumerate(vertices_list):
-            for node2 in vertices_list[(i + 1):]:
+            for node2 in vertices_list[(i + 1) :]:
                 for path in nx.all_simple_paths(H0, source=node1, target=node2):
                     if set(path).issubset(ignore_nodes.union(set([node1, node2]))):
                         H1.add_edge(node1, node2)
@@ -237,6 +237,107 @@ class CausalGraph(nx.DiGraph):
             H1.add_edge(node, outcome)
 
         return H1
+
+    def build_D(self, treatment, outcome, L, N):
+        """Returns the D flow network associated with treatment, outcome, L and N.
+        If a node does not have a 'cost' attribute, this function will assume
+        the cost is infinity
+
+        Parameters
+        ----------
+        treatment : string
+            A node in the graph
+        outcome : string
+            A node in the graph
+        L : list of strings
+            Nodes in the graph
+        N : list of strings
+            Nodes in the graph
+
+        Returns
+        ----------
+        D: nx.DiGraph()
+        """
+        H1 = self.build_H1(treatment, outcome, L, N)
+        D = nx.DiGraph()
+        for node in H1.nodes.keys():
+            if "cost" in H1.nodes[node]:
+                capacity = H1.nodes[node]["cost"]
+            else:
+                capacity = np.inf
+            D.add_edge(node + "'", node + "''", capacity=capacity)
+
+        for edge in H1.edges.keys():
+            D.add_edge(edge[0] + "''", edge[1] + "'", capacity=np.inf)
+            D.add_edge(edge[1] + "''", edge[0] + "'", capacity=np.inf)
+        return D
+
+    def compute_smallest_mincut(self, treatment, outcome, L, N):
+        """Returns a min-cut in the flow network D associated with
+        treatment, outcome, L and N that is contained in any other min-cut
+
+        Parameters
+        ----------
+        treatment : string
+            A node in the graph
+        outcome : string
+            A node in the graph
+        L : list of strings
+            Nodes in the graph
+        N : list of strings
+            Nodes in the graph
+
+        Returns
+        ----------
+        S_c: set
+        """
+        D = self.build_D(treatment=treatment, outcome=outcome, L=L, N=N)
+        _, flow_dict = nx.algorithms.flow.maximum_flow(
+            flowG=D, _s=outcome + "''", _t=treatment + "'"
+        )
+        queu = [outcome + "''"]
+        S_c = set()
+        visited = set()
+        while len(queu) > 0:
+            node = queu.pop()
+            if node not in visited:
+                visited.add(node)
+                point_in = D.in_edges(node)
+                point_out = D.out_edges(node)
+                for edge in point_out:
+                    capacity = D.edges[edge]["capacity"]
+                    flow = flow_dict[edge[0]][edge[1]]
+                    if flow < capacity:
+                        queu.append(edge[1])
+                        S_c.add(edge[1])
+                for edge in point_in:
+                    flow = flow_dict[edge[0]][edge[1]]
+                    if flow > 0:
+                        queu.append(edge[0])
+                        S_c.add(edge[0])
+        return S_c
+
+    def h_operator(self, S):
+        """Given a set S of vertices in the flow network D, returns the
+         operator h(S), a set of vertices in the undirected graph H1
+
+        Parameters
+        ----------
+        S : set
+            A set of vertices in D
+
+        Returns
+        ----------
+        Z: set
+        """
+        Z = set()
+        for node in self.nodes:
+            nodep = node + "'"
+            nodepp = node + "''"
+            condition = nodep in S and nodepp not in S
+            if condition:
+                Z.add(node)
+        return Z
 
     def optimal_adj_set(self, treatment, outcome, L, N):
         """Returns the optimal adjustment set with respect to treatment, outcome, L and N
@@ -259,7 +360,9 @@ class CausalGraph(nx.DiGraph):
         H1 = self.build_H1(treatment, outcome, L, N)
         if treatment in H1.neighbors(outcome):
             raise NoAdjException(EXCEPTION_NO_ADJ)
-        elif N == self.nodes() or set(N).issubset(self.ancestors_all(L + [treatment, outcome])):
+        elif N == self.nodes() or set(N).issubset(
+            self.ancestors_all(L + [treatment, outcome])
+        ):
             optimal = nx.node_boundary(H1, set([outcome]))
             return optimal
         else:
@@ -289,7 +392,9 @@ class CausalGraph(nx.DiGraph):
         if treatment in H1.neighbors(outcome):
             raise NoAdjException(EXCEPTION_NO_ADJ)
         else:
-            optimal_minimal = self.unblocked(H1, treatment, nx.node_boundary(H1, set([outcome])))
+            optimal_minimal = self.unblocked(
+                H1, treatment, nx.node_boundary(H1, set([outcome]))
+            )
             return optimal_minimal
 
     @staticmethod
@@ -361,3 +466,31 @@ class CausalGraph(nx.DiGraph):
                         optimal_minimum.add(node)
                         break
             return optimal_minimum
+
+    def optimal_mincost_adj_set(self, treatment, outcome, L, N):
+        """Returns the optimal minimum cost adjustment set with respect to treatment, outcome, L and N
+
+        Parameters
+        ----------
+        treatment : string
+            A node in the graph
+        outcome : string
+            A node in the graph
+        L : list of strings
+            Nodes in the graph
+        N : list of strings
+            Nodes in the graph
+
+        Returns
+        ----------
+        optimal_mincost: set
+        """
+        H1 = self.build_H1(treatment, outcome, L, N)
+        if treatment in H1.neighbors(outcome):
+            raise NoAdjException(EXCEPTION_NO_ADJ)
+        else:
+            S_c = self.compute_smallest_mincut(
+                treatment=treatment, outcome=outcome, L=L, N=N
+            )
+            optimal_mincost = self.h_operator(S_c)
+        return optimal_mincost
