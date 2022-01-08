@@ -1,7 +1,7 @@
 # optimaladj: A library for computing optimal adjustment sets in causal graphical models
 
 This package implements the algorithms introduced in [Smucler, Sapienza and Rotnitzky (2021)](https://doi.org/10.1093/biomet/asab018) and
-Smucler and Rotnitzky (2022) to compute optimal adjustment sets in causal graphical models.
+[Smucler and Rotnitzky (2022)](https://arxiv.org/abs/2201.02037) to compute optimal adjustment sets in causal graphical models.
 The package provides a class, called CasualGraph, that inherits from [networkx's](https://networkx.org/) DiGraph class and has methods
 to compute: the optimal, optimal minimal, optimal minimum cardinality and optimal minimum cost adjustment sets for individualized
 treatment rules (point exposure dynamic treatment regimes) in non-parametric causal graphical
@@ -25,7 +25,7 @@ An optimal minimum cardinality adjustment set is an observable adjustment set th
 
 An optimal minimum cost adjustment set is defined similarly, being optimal in the class of observable adjustment sets that have minimum possible cost.
 
-Under these assumptions, [Smucler, Sapienza and Rotnitzky (2020)](https://arxiv.org/abs/2004.10521) and Smucler and Rotnitzky (2022) show that 
+Under these assumptions, [Smucler, Sapienza and Rotnitzky (2020)](https://arxiv.org/abs/2004.10521) and [Smucler and Rotnitzky (2022)](https://arxiv.org/abs/2201.02037) show that 
 optimal minimal, optimal minimum cardinality and optimal minimum cost adjustment sets always exist, and can be computed in polynomial time. They also provide a sufficient criterion for the existance of an optimal adjustment set and a polynomial time algorithm to compute it when it exists.
 
 Check out our notebook with [examples](https://github.com/facusapienza21/optimaladj/blob/main/examples/Examples.ipynb).
