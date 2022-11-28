@@ -113,9 +113,9 @@ class CausalGraph(nx.DiGraph):
         forbidden = set()
 
         for node in self.causal_vertices(treatment, outcome):
-            forbidden = forbidden.union(nx.descendants(self, node).union(node))
+            forbidden = forbidden.union(nx.descendants(self, node).union({node}))
 
-        return forbidden.union(treatment)
+        return forbidden.union({treatment})
 
     def ignore(self, treatment, outcome, L, N):
         """Returns the set of ignorable vertices with respect to treatment, outcome,

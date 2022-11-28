@@ -339,6 +339,7 @@ outcome_9 = "Y"
 G_9.add_nodes_from(costs_9)
 G_9.add_edges_from(
     [
+        ("A", "Y"),
         ("K", "A"),
         ("W1", "K"),
         ("W2", "K"),
@@ -362,3 +363,31 @@ OPTIMALS.append(set(["O", "W7", "W8", "W9"]))
 OPTIMALS_MINIMAL.append(set(["W7", "W8", "W9"]))
 OPTIMALS_MINIMUM.append(set(["K"]))
 OPTIMALS_MINCOST.append(set(["W7", "W8", "W6"]))
+
+# Regression test for bug on name handling, spotted by Sara Taheri
+
+G_10 = CausalGraph()
+L_10 = []
+N_10 = ["T", "Y", "M1", "M2", "Z1", "Z2", "Z3"]
+costs_10 = [(node, {"cost": 1}) for node in N_10]
+treatment_10 = "T"
+outcome_10 = "Y"
+G_10.add_nodes_from(costs_10)
+G_10.add_edges_from(
+    [
+        ("Z1", "Z2"),
+        ("Z1", "T"),
+        ("Z2", "Z3"),
+        ("Z3", "Y"),
+        ("T", "M1"),
+        ("M1", "M2"),
+        ("M2", "Y"),
+    ]
+)
+
+EXAMPLES.append(CausalGraphExample(G_10, treatment_10, outcome_10, L_10, N_10))
+
+OPTIMALS.append(set(["Z3"]))
+OPTIMALS_MINIMAL.append(set(["Z3"]))
+OPTIMALS_MINIMUM.append(set(["Z3"]))
+OPTIMALS_MINCOST.append(set(["Z3"]))
