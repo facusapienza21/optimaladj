@@ -1,0 +1,4 @@
+optimaladj 0.0.4
+==============
+
+* Fixed a bug reported by Sara Taheri, whereby due to mishandling of node names we could end up including forbidden variables in an adjustment set.
