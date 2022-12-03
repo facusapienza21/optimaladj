@@ -42,7 +42,7 @@ def test_no_adj_minimum_optimal(example=EXAMPLES[0]):
 
 @pytest.mark.parametrize(
     "example, optimal_stored",
-    zip(EXAMPLES[1:4] + [EXAMPLES[8]], OPTIMALS[1:4] + [OPTIMALS[8]]),
+    zip(EXAMPLES[1:4] + EXAMPLES[8:12], OPTIMALS[1:4] + OPTIMALS[8:12]),
 )
 def test_optimal(example, optimal_stored):
     optimal = example.G.optimal_adj_set(
@@ -63,7 +63,7 @@ def test_optimal_failure(example):
 
 
 @pytest.mark.parametrize(
-    "example, optimal_minimal_stored", zip(EXAMPLES[1:8], OPTIMALS_MINIMAL[1:8])
+    "example, optimal_minimal_stored", zip(EXAMPLES[1:12], OPTIMALS_MINIMAL[1:12])
 )
 def test_optimal_minimal(example, optimal_minimal_stored):
     optimal = example.G.optimal_minimal_adj_set(
@@ -73,7 +73,7 @@ def test_optimal_minimal(example, optimal_minimal_stored):
 
 
 @pytest.mark.parametrize(
-    "example, optimal_minimum_stored", zip(EXAMPLES[1:8], OPTIMALS_MINIMUM[1:8])
+    "example, optimal_minimum_stored", zip(EXAMPLES[1:12], OPTIMALS_MINIMUM[1:12])
 )
 def test_optimal_minimum(example, optimal_minimum_stored):
     optimal = example.G.optimal_minimum_adj_set(
@@ -83,7 +83,7 @@ def test_optimal_minimum(example, optimal_minimum_stored):
 
 
 @pytest.mark.parametrize(
-    "example, optimal_mincost_stored", zip(EXAMPLES[1:8], OPTIMALS_MINCOST[1:8])
+    "example, optimal_mincost_stored", zip(EXAMPLES[1:12], OPTIMALS_MINCOST[1:12])
 )
 def test_optimal_mincost(example, optimal_mincost_stored):
     optimal = example.G.optimal_mincost_adj_set(
