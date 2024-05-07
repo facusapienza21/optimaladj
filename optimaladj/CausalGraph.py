@@ -360,7 +360,7 @@ class CausalGraph(nx.DiGraph):
         H1 = self.build_H1(treatment, outcome, L, N)
         if treatment in H1.neighbors(outcome):
             raise NoAdjException(EXCEPTION_NO_ADJ)
-        elif N == self.nodes() or set(N).issubset(
+        elif set(N) == set(self.nodes()) or set(N).issubset(
             self.ancestors_all(L + [treatment, outcome])
         ):
             optimal = nx.node_boundary(H1, set([outcome]))
