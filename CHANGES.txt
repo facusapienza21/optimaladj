@@ -1,3 +1,8 @@
+optimaladj 0.0.5
+==============
+
+* Kirtan Padh spotted and fixed a bug, due to which the sufficient condition for the existance of an optimal adjustment set was not being tested appropriately.
+
 optimaladj 0.0.4
 ==============
 

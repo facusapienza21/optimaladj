@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="optimaladj",
-    version="0.0.4",
+    version="0.0.5",
     author="Facundo Sapienza, Ezequiel Smucler",
     author_email="ezequiels.90@gmail.com",
     description="A package to compute optimal adjustment sets in causal graphs",
